@@ -1,5 +1,4 @@
 require 'rubygems'
-require 'json'
 require 'net/http'
 require 'digest/md5'
 require 'cgi' unless defined? Rack
