@@ -86,7 +86,7 @@ module Facemask
     
     def json_parse(body)
       unescaped_attempt = false
-      @logger.puts "Facemask receives #{data.inspect}" if @logger
+      @logger.puts "Facemask receives #{body.inspect}" if @logger
       
       begin
         data = JSON.parse body
