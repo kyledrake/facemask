@@ -1,9 +1,9 @@
 require 'rubygems'
-require 'net/http'
 require 'digest/md5'
 require 'cgi' unless defined? Rack
 require 'json' unless defined? JSON
 require 'hashie'
+require 'rest_client'
 
 module Facemask
   
@@ -73,7 +73,8 @@ module Facemask
       
       attempt = 0
       begin
-        response = Net::HTTP.post_form URI.parse(FB_URL), arguments
+        # response = Net::HTTP.post_form URI.parse(FB_URL), arguments
+        body = RestClient.post(FB_URL, arguments){|response, request| response }
       rescue SocketError, Errno::ECONNRESET, EOFError => err
         attempt += 1 && retry if attempt < @retry_attempts
         raise
@@ -81,7 +82,8 @@ module Facemask
       rescue
         raise
       end
-      custom_format ? response.body : self.json_parse(response.body)
+      custom_format ? body : self.json_parse(body)
+      
     end
     
     def json_parse(body)
